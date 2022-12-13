@@ -1,0 +1,58 @@
+package com.company;
+import java.util.Random;
+public class laba2 {
+    //Основное тело программы
+    public static void main(String[] args) {
+        int N = 4, M = 3;//размер массива
+        int[][] matrice = new int[N][M];//задание пустого массива
+        create(matrice);//создание
+        print(matrice);//вывод
+        print(change(matrice, Max(matrice)));//вывод нового массива
+    }
+    //Создание массива с помощью Random
+    public static void create(int[][] matrice) {
+        Random random = new Random();
+        for (int i = 0; i < matrice.length; i++) {
+            for (int j=0;j < matrice[i].length; j++)
+                matrice[i][j] = random.nextInt(-99, 100);
+        }
+    }
+    //Нахождение максимального элемента матрицы
+    static int Max(int[][]matrice) {
+        int maxx = matrice[0][0];
+        int mxcol = 0;
+        for (int i = 0; i < matrice.length; i++) {
+            for (int j = 0; j < matrice[i].length; j++) {
+                if (matrice[i][j] < maxx) { //Знак строго ">" так, как если элементы в столбцах равны, то нам всё равно нужен первый из них
+                    maxx = matrice[i][j];
+                    mxcol = j; //элементу "максимальная колонна" присвается номер столбца максимального элемента матрицы
+                }
+            }
+        }
+        return mxcol;
+        //Вывод номера столбца, в котором был найден максимальный элемент
+    }
+    //Данный метод для замены начального массива, на новый без столбца, содержащего максимальный элемент
+    static int[][] change(int[][]matrice, int columnNum) {
+        int[][] newMatrice = new int[matrice.length][matrice[0].length - 1];
+        for (int i = 0; i < matrice.length; i++) {
+            int Newj = 0;
+            for (int j = 0; j < matrice[i].length; j++) {
+                if (j != columnNum) {
+                    newMatrice[i][Newj] = matrice[i][j];
+                    Newj+=1;
+                }
+            }
+        }
+        return newMatrice;//выводим изменённый массив
+    }
+    //Метод для вывода массива
+    static void print(int[][]matrice) {
+        for (int i = 0; i < matrice.length; i++) {
+            for (int j = 0; j < matrice[i].length; j++)
+                System.out.print(matrice[i][j] + " ");//для более удобного и понятного вывода массива в кавычках ставим Tab
+            System.out.println();
+        }
+        System.out.println("___________________________________________");
+    }
+}

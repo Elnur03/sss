@@ -1,0 +1,58 @@
+package forth_lab;
+
+public class field {//класс поле клеток
+	private empty_boxes[][] nowfield;//текущее состояние клетки
+	private empty_boxes[][] nextfield;//следующее состояние клетки
+	
+	public field() {//конструктор
+		nowfield = new empty_boxes[17][17];
+		nextfield=new empty_boxes[17][17];
+		for (int i=0; i<17; i++) {
+			for (int j=0; j<17;j++) {
+				nowfield[i][j]=new empty_boxes(i, j);
+				nextfield[i][j]=new empty_boxes(i, j);
+			}
+		}
+	}
+	public empty_boxes[][] getnowfield(){
+		return nowfield;
+	}
+	public void init() {//изначальное поле клеток
+		nowfield[3][8]=new fill_boxes(3,8);
+		nowfield[4][7]=new fill_boxes(4, 7);
+		nowfield[5][7]=new fill_boxes(5, 7);
+		nowfield[5][8]=new fill_boxes(5, 8);
+		nowfield[5][9]=new fill_boxes(5, 9);
+		nowfield[10][7]=new fill_boxes(10, 7);
+		nowfield[10][8]=new fill_boxes(10, 8);
+		nowfield[10][9]=new fill_boxes(10, 9);
+		nowfield[11][7]=new fill_boxes(11, 7);
+		nowfield[12][8]=new fill_boxes(12, 8);
+		nowfield[3][2]=new fill_boxes(3, 2);
+		nowfield[4][3]=new fill_boxes(4, 3);
+		nowfield[5][1]=new fill_boxes(5, 1);
+		nowfield[5][2]=new fill_boxes(5, 2);
+		nowfield[5][3]=new fill_boxes(5, 3);
+		nowfield[9][1]=new fill_boxes(9, 1);
+		nowfield[9][2]=new fill_boxes(9, 2);
+		nowfield[9][3]=new fill_boxes(9, 3);
+		nowfield[10][3]=new fill_boxes(10, 3);
+		nowfield[11][2]=new fill_boxes(11, 2);
+	}
+	public void update() {//метод для одного шага - обновление состояния клетки
+		for (int i=1; i<16;i++)
+			for (int j=1; j<16;j++)
+				nextfield[i][j]=nowfield[i][j].nextFill(this);
+		empty_boxes[][] a=nowfield;
+		nowfield=nextfield;
+		nextfield=a;
+	}
+	public void print() {//вывод поля
+		for (int i=1; i<16; i++) {
+			for (int j=1; j<16; j++)
+				nowfield[i][j].print();
+			System.out.println();
+		}
+	}
+
+}

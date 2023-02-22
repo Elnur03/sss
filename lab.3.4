@@ -1,0 +1,87 @@
+// класс карты, в котором создается карта и реализуются методы по изменению ее параметров, идентификации
+package game;
+
+// Класс 
+public class Card {
+	private int val; // обеспечивает уникальность каждой карты
+	private int next; // индекс следующей карты
+	
+	// конструктор
+	public Card(int val)
+	{
+		this.val = val;
+		next = -1;
+	}
+	
+	// получение значения, отвечающего за достоинство карты
+	// возвращается значение, отвечающее за достоинство карты
+	public int getVal()
+	{
+		return val;
+	}
+	
+	// получение номера следующей карты
+	// номер следующей карты
+	public int getNext()
+	{
+		return next;
+	}
+	
+	// изменение номера следующей карты
+	// передается новый номер следующей карты
+	public void changeNext(int new_next)
+	{
+		this.next = new_next;
+	}
+	
+	// вывод достоинства и масти карты
+	public void print()
+	{
+		switch (val%9) // выделение достоинства карты
+		{
+			case (0):
+				System.out.print("6");
+				break;
+			case (1): 
+				System.out.print("7");
+				break;
+			case (2): 
+				System.out.print("8");
+				break;
+			case (3): 
+				System.out.print("9");
+				break;
+			case (4): 
+				System.out.print("10");
+				break;
+			case (5): 
+				System.out.print("V"); // valet
+				break;
+			case (6): 
+				System.out.print("D"); // dama
+				break;
+			case (7): 
+				System.out.print("K"); // korol
+				break;
+			case (8): 
+				System.out.print("T"); // tuz
+				break;
+		}
+		
+		switch (val/9) // выделение масти карты
+		{
+			case (0):
+				System.out.print("b "); // bubi
+				break;
+			case (1):
+				System.out.print("c "); // chervi
+				break;
+			case (2):
+				System.out.print("k "); // kresti
+				break;
+			case (3):
+				System.out.print("p "); // piki
+				break;
+		}
+	}
+}

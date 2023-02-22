@@ -1,0 +1,21 @@
+package forth_lab;
+
+public class fill_boxes extends empty_boxes{
+	public fill_boxes(int x, int y) {//конструктор
+		super(x,y);
+	}
+	protected int q() {//метод, возвращающий 0, для подсчета количества соседей
+		return 1;
+	}
+	public empty_boxes nextFill(field ffield) {//определение будет ли закрашена клетка
+		empty_boxes[][] field = ffield.getnowfield();
+		int w = this.k(field);
+		if (3==w||2==w)
+			return this;
+		return new empty_boxes(x, y);
+	}
+	public void print() {//вывод клетки
+		System.out.print("X ");
+	}
+
+}

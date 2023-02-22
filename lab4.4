@@ -1,0 +1,19 @@
+package forth_lab;
+
+public class Main {
+	public static void main(String[] args) {
+		field field = new field();//создание поля
+		field.init();
+		int N=12;//количество шагов
+		System.out.println("Начало");
+		field.print();//вывод поля
+		for (int i=1; i<N; i++) {
+			field.update();//обновление поля
+			System.out.println("Шаг "+i);
+			field.print();//вывод поля
+		}
+		
+	}
+
+}
+

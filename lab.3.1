@@ -4,56 +4,42 @@ package game;
 import java.util.Random;
 
 public class Deck {
-    Card deck[] = new Card[36]; // создание массива колоды
-	
-    // конструктор
-	public Deck()
-	{
-		for(int i = 0; i < deck.length; i++)
-		{
-			deck[i] = new Card(i);
-		}
-	}
-	
-	// получение колоды типа Card
-	// колода типа Card
-	public Card[] getDeck()
-	{
-		return deck;
-	}
-	
-	
-	// вывод всей колоды на экран
-	public void print()
-	{
-		for(int i = 0; i < deck.length; i++)
-		{
-			deck[i].print();
-		}
-		System.out.println();
-	}
-	
-	// перемешивание колоды
-	public void mixing()
-	{
-		for(int i = 0; i < deck.length; i++)
-		{
-			Random r = new Random();
-			int x = r.nextInt(deck.length); // рандомный индекс карты для замены
-			Card a = deck[x];
-			deck[x] = deck[i]; // 2 карты меняются местами
-			deck[i] = a;
-		}
-	}
-	
-	public void razdacha(CardSequence frst_player, CardSequence scnd_player)
-	{
-		for (int i = 0; i < deck.length; i+=2)
-		{
-			deck[i].changeNext(i);
-			frst_player.addCard(deck[i]);
-			deck[i+1].changeNext(i+1);
-			scnd_player.addCard(deck[i+1]);
-		}
-	}
+    private Card[] cards;
+    //Заполяет массив карт
+    public Deck() {
+        cards = new Card[36];
+        for (int i = 0; i < cards.length; i++) {
+            cards[i] = new Card(i);
+        }
+    }
+    //Возращает адрес массива карт
+    public Card[] getCards() {
+        return cards;
+    }
+    //Перемешивание карт
+    public void shuffle() {
+        Random random = new Random();
+        for (int i = 0; i < cards.length; i++) {
+            int pos = random.nextInt(cards.length);
+            Card temp = cards[i];
+            cards[i] = cards[pos];
+            cards[pos] = temp;
+        }
+    }
+
+    public void show() {
+        for(Card card : cards) {
+            card.printCard();
+        }
+        System.out.println();
+    }
+    //Распределение карт по игрокам
+    public void distributeCards(Player player1, Player player2) {
+        for (int i = 0; i < 36; i+=2) {
+            cards[i].setNext(i); //Определяет след элемент в списке. (next=-1 =>Значение i-той карты next=i, cards[i]-объект класса карт, мы присваиваем next=i
+            player1.addCard(cards[i]); //Далее добавляем карту в конец последовательности нового массива cards для первого игрока)
+            cards[i + 1].setNext(i + 1); //В конструкторе класса карт прописано что у каждого объекта должно быть next
+            player2.addCard(cards[i + 1]); // В классе player start и есть тот самый next
+        }
+    }
 }

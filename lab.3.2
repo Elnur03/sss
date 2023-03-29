@@ -1,97 +1,69 @@
-package game;
+public class Player {
+    private String name;
+    private int start;
+    private static Card[] cards;
 
-public class CardSequence {
-	private Card deck[]; // массив колоды
-	private int start; // индекс первой карты в последовательности
-	
-	// конструктор
-	public CardSequence(Deck deck)
-	{
-		start = -1;
-		this.deck = deck.getDeck();
-	}
-	
-	// получение индекса первой карты в последовательности
-	// индекс первой карты в последовательности
-	public int getStart()
-	{
-		return start;
-	}
-	
-	// изменение индекса первой карты в последовательности
-	// передается новый индекс карты
-	public void changeStart(int new_start)
-	{
-		this.start = new_start;
-	}
-	
-	// сравнение достоинств двух карт
-	// передаются 2 карты
-	// возвращается true в случае, если достоинство первой карты больше, и false, если достоинство первой карты меньше или равно достоинству второй карты
-	public boolean prov(Card a)
-	{
-		return a.getVal()%9>deck[a.getNext()].getVal()%9;
-	}
-	
-	// вывод последовательности на экран
-	public void print()
-	{
-		int i = start; // индекс первой карты в последовательности
-		while (i!=-1) // поочередный вывод карт последовательности на экран
-		{
-			deck[i].print();
-			i = deck[i].getNext();
-		}
-		System.out.println();
-	}
-	
-	// сброс карты
-	// возвращает сброшенную карту
-	public Card drop()
-	{
-		int i = start; // индекс первой карты в последовательности
-		Card card = deck[i]; // сохраняем эту карту
-		start = card.getNext(); // первая карта удаляется из последовательности карт игрока, сбросившего эту карту
-		card.changeNext(i);
-		card.print();
-		return card;
-	}
-	
-	// поиск последней карты в последовательности
-	// передается последовательность
-	// возвращается индекс последней карты
-	private int lastCard()
-	{
-		int i = start; // индекс первой карты в последовательности
-		if (i != -1)
-		{
-			while (deck[i].getNext()!=-1) // поиск последней карты в последовательности
-			{
-				i = deck[i].getNext();
-			}
-			return i;
-		}
-		return -1;
-	}
-	
-	// добавление карты в конец последовательности
-	// передается карта, которую необходимо добавить в конец последовательности
-	public void addCard(Card card)
-	{
-		if (start == -1)
-			start = card.getNext();
-		else
-		{
-			deck[lastCard()].changeNext(card.getNext());
-		}
-		card.changeNext(-1);
-	}
-	
-	// добавление последовательности стола в конец последовательности игрока
-	// передается последовательность стола
-	public void add(CardSequence table)
-	{
-		deck[lastCard()].changeNext(table.getStart()); // последовательность стола присоединяется в конец последовательности игрока
-		table.changeStart(-1); // последовательность стола очищается
-	}	
+    public Player(String name) {
+        this.name = name;
+        start = -1;
+    }
+    //Один для всех объектов данного класса, для простого обращения к полю карт
+    public static void setDeck(Deck deck){
+        //адрес, если вместо deck мы напишем любой объект класса Deck, то туда будет записан его личный массив(в нашем случае у каждого игрока будет своя колода)
+        cards = deck.getCards();
+    }
+
+    //Добавляет карту в конец последовательности
+    public void addCard(Card card) {
+        if (start == -1) { // Если последовательность пустая -> start == -1
+            start = card.getNext();//В старт записываем индекс первой карты (те после первой итерации start=0)
+
+        }
+        else {
+            Card p = getLastCard(); //р объект класса карт
+            //при второй итерации у player1 card.getNext()=2 следует берём карту с индексом 2
+            p.setNext(card.getNext());//Ставим некст как индекс новой карты
+
+        }
+        card.setNext(-1);// Добавленная карта - последняя, поэтому ее Next -1
+    }
+
+    public Card getLastCard() {
+        Card p = cards[start];
+        while (p.getNext() != -1) { //Ищем конец последовательности
+            p = cards[p.getNext()];
+        }
+        return p;
+    }
+    //Перемещает все карты в другую последовательность
+    public void takeAllCards(Player p) {
+        Card c = getLastCard();
+        c.setNext(p.start);//Последней карте ставим  первую карту другого игрока
+        p.start = -1; //Изначальная последовательность пустая
+    }
+    //Возрат карты из последовательности "стол"(те кладём последнюю карту из последовательности колоды игрока на стол)
+    public Card takeCard() {
+        int temp;
+        Card firstCard = cards[start];//Первая
+        temp = firstCard.getNext(); // следующая после первой
+        firstCard.setNext(start); // у первой карты собственный индекс
+        start = temp;
+        return firstCard;
+    }
+    //Вывод последовательности
+    public void showCards() {
+        System.out.println("Карты игрока: " + name);
+        if (start != -1) {
+            Card p = cards[start];
+            while (p.getNext() != -1) { //пока некст не станет равен -1 выводим карты последовательности игрока
+                p.printCard();
+                p = cards[p.getNext()];
+            }
+            p.printCard(); //выводим последнюю карту тк её некст равен -1
+            System.out.println();
+        }
+        else {
+            System.out.println("Нет карт");
+        }
+    }
 }
